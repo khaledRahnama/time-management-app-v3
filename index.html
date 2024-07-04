@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Management App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Time Management App</h1>
+        <div class="input-group">
+            <input type="number" id="secondsInput" placeholder="Enter seconds" min="0">
+            <input type="text" id="taskInput" placeholder="Enter task">
+            <button id="addTaskBtn">Add Task</button>
+        </div>
+        <table id="taskTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Seconds</th>
+                    <th>Task</th>
+                    <th>Score</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="taskTableBody"></tbody>
+        </table>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
