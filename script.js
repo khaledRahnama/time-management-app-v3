@@ -117,7 +117,7 @@ function getGradientColor(score) {
 function startCountdownIfNotInProgress() {
     const rows = document.querySelectorAll('#taskTableBody tr');
 
-    for (let i = 0; i < rows.length; i++) {
+    for (let i = rows.length - 1; i >= 0; i--) {
         const row = rows[i];
         const seconds = parseInt(row.dataset.seconds, 10);
         if (!row.dataset.countdownInProgress && seconds > 0) {
@@ -140,6 +140,7 @@ function countdownForRow(row, seconds) {
                 setScoreAndColor(row, 100);
                 row.cells[1].innerText = initialSeconds; // Show the initial amount of the timer
                 row.dataset.countdownInProgress = false; // Reset countdown status
+                alert('Congratulations KHALED!');
                 startCountdownIfNotInProgress(); // Start countdown for the next row
             });
         }
