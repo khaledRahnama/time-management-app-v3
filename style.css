@@ -1,28 +1,30 @@
 body {
   font-family: "Helvetica Neue", Arial, sans-serif;
-  background-color: #f0f2f5;
+  background-color: #e9ebee;
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 50px;
 }
 
 .container {
   width: 90%;
   max-width: 800px;
-  background: #ffffff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 20px;
+  margin-bottom: 50px;
 }
 
 h1 {
   text-align: center;
-  color: #333333;
+  color: #333;
   margin-bottom: 20px;
-  font-size: 2em;
+  font-size: 1.8em;
 }
 
 .input-group {
@@ -30,6 +32,7 @@ h1 {
   justify-content: center;
   margin-bottom: 20px;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .input-group input {
@@ -38,49 +41,51 @@ h1 {
   border: 1px solid #ccc;
   border-radius: 4px;
   flex: 1;
+  min-width: 120px;
 }
 
 .input-group button {
   padding: 10px 20px;
   font-size: 1em;
   border: none;
-  background-color: #007bff;
-  color: #ffffff;
+  background-color: #1877f2;
+  color: #fff;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .input-group button:hover {
-  background-color: #0056b3;
+  background-color: #1558b0;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 table,
 th,
 td {
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
 }
 
 th,
 td {
-  padding: 15px;
+  padding: 12px;
   text-align: center;
+  font-size: 0.95em;
 }
 
 th {
-  background-color: #f7f7f7;
+  background-color: #f5f6f7;
 }
 
 td button {
-  padding: 5px 10px;
-  font-size: 0.9em;
+  padding: 6px 12px;
+  font-size: 0.85em;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -88,28 +93,40 @@ td button {
 }
 
 button.edit {
-  background-color: #ffc107;
-  color: #ffffff;
+  background-color: #ffb300;
+  color: #fff;
 }
 
 button.delete {
-  background-color: #dc3545;
-  color: #ffffff;
+  background-color: #e60023;
+  color: #fff;
 }
 
 button.score {
   background-color: #28a745;
-  color: #ffffff;
+  color: #fff;
 }
 
 button.edit:hover {
-  background-color: #e0a800;
+  background-color: #e1a800;
 }
 
 button.delete:hover {
-  background-color: #c82333;
+  background-color: #d4001d;
 }
 
 button.score:hover {
   background-color: #218838;
+}
+
+@media (max-width: 600px) {
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-group input,
+  .input-group button {
+    width: 100%;
+  }
 }
