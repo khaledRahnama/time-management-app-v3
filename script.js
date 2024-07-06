@@ -147,6 +147,7 @@ function countdownForRow(row, seconds) {
     }, 1000);
 }
 
+
 function setScoreAndColor(row, score) {
     row.cells[3].innerText = score;
     row.style.backgroundColor = getGradientColor(score);
