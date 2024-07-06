@@ -25,7 +25,8 @@ function addTask() {
         seconds: parseInt(secondsInput, 10),
         task: taskInput,
         score: null,
-        countdownInProgress: false
+        countdownInProgress: false,
+        countdownCompleted: false
     };
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -49,6 +50,7 @@ function addTaskToTable(task, index) {
 
     row.dataset.id = task.id;
     row.dataset.seconds = task.seconds;
+    row.dataset.countdownCompleted = task.countdownCompleted;
 
     row.innerHTML = `
         <td>${index}</td>
@@ -120,8 +122,11 @@ function startCountdownIfNotInProgress() {
     for (let i = rows.length - 1; i >= 0; i--) {
         const row = rows[i];
         const seconds = parseInt(row.dataset.seconds, 10);
-        if (!row.dataset.countdownInProgress && seconds > 0) {
+        const countdownCompleted = row.dataset.countdownCompleted === 'true';
+
+        if (!countdownCompleted && !row.dataset.countdownInProgress && seconds > 0) {
             row.dataset.countdownInProgress = true;
+            row.style.backgroundColor = 'lightblue';
             countdownForRow(row, seconds);
             break;
         }
@@ -140,7 +145,7 @@ function countdownForRow(row, seconds) {
                 setScoreAndColor(row, 100);
                 row.cells[1].innerText = initialSeconds; // Show the initial amount of the timer
                 row.dataset.countdownInProgress = false; // Reset countdown status
-                // alert('Congratulations!');
+                row.dataset.countdownCompleted = true; // Mark row as countdown completed
                 startCountdownIfNotInProgress(); // Start countdown for the next row
             });
         }
@@ -155,50 +160,7 @@ function setScoreAndColor(row, score) {
     const task = tasks.find(task => task.id == row.dataset.id);
     if (task) {
         task.score = score;
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-}
-
-function playSound() {
-    const audio = new Audio('alarm.mp3');
-    return new Promise((resolve) => {
-        audio.play();
-        setTimeout(() => {
-            audio.pause();
-            audio.currentTime = 0; // Reset audio playback to the beginning
-            resolve();
-        }, 10000); // Play sound for 10 seconds
-    });
-}
-
-function countdownForRow(row, seconds) {
-    const initialSeconds = seconds;
-    const interval = setInterval(() => {
-        if (seconds > 0) {
-            seconds--;
-            row.cells[1].innerText = seconds;
-        } else {
-            clearInterval(interval);
-            playSound().then(() => {
-                setScoreAndColor(row, 100);
-                row.cells[1].innerText = initialSeconds; // Show the initial amount of the timer
-                row.dataset.countdownInProgress = false; // Reset countdown status
-                // alert('Congratulations!');
-                startCountdownIfNotInProgress(); // Start countdown for the next row
-            });
-        }
-    }, 1000);
-}
-
-
-function setScoreAndColor(row, score) {
-    row.cells[3].innerText = score;
-    row.style.backgroundColor = getGradientColor(score);
-
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const task = tasks.find(task => task.id == row.dataset.id);
-    if (task) {
-        task.score = score;
+        task.countdownCompleted = true; // Mark task as countdown completed
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 }
