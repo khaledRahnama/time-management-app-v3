@@ -30,7 +30,7 @@ function addTask() {
     };
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.push(task);  // Append the new task to the end of the list
+    tasks.push(task); // Append the new task to the end of the list
     localStorage.setItem('tasks', JSON.stringify(tasks));
 
     addTaskToTable(task, tasks.length);
@@ -68,7 +68,7 @@ function addTaskToTable(task, index) {
         row.style.backgroundColor = getGradientColor(task.score);
     }
 
-    taskTableBody.appendChild(row);  // Append the row to the end of the table body
+    taskTableBody.appendChild(row); // Append the row to the end of the table body
 }
 
 function deleteTask(id) {
@@ -117,17 +117,20 @@ function getGradientColor(score) {
 }
 
 function startCountdownIfNotInProgress() {
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const rows = document.querySelectorAll('#taskTableBody tr');
 
-    for (let i = 0; i < rows.length; i++) {
-        const row = rows[i];
-        const seconds = parseInt(row.dataset.seconds, 10);
-        const countdownCompleted = row.dataset.countdownCompleted === 'true';
-
-        if (!countdownCompleted && !row.dataset.countdownInProgress && seconds > 0) {
-            row.dataset.countdownInProgress = true;
-            row.style.backgroundColor = 'lightblue';
-            countdownForRow(row, seconds);
+    for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        if (!task.countdownCompleted && !task.countdownInProgress && task.seconds > 0) {
+            const row = Array.from(rows).find(r => r.dataset.id == task.id);
+            if (row) {
+                row.dataset.countdownInProgress = true;
+                row.style.backgroundColor = 'lightblue';
+                task.countdownInProgress = true;
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                countdownForRow(row, task.seconds);
+            }
             break;
         }
     }
@@ -161,6 +164,7 @@ function setScoreAndColor(row, score) {
     if (task) {
         task.score = score;
         task.countdownCompleted = true; // Mark task as countdown completed
+        task.countdownInProgress = false; // Reset countdown status
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 }
