@@ -140,7 +140,50 @@ function countdownForRow(row, seconds) {
                 setScoreAndColor(row, 100);
                 row.cells[1].innerText = initialSeconds; // Show the initial amount of the timer
                 row.dataset.countdownInProgress = false; // Reset countdown status
-                alert('Congratulations KHALED!');
+                // alert('Congratulations!');
+                startCountdownIfNotInProgress(); // Start countdown for the next row
+            });
+        }
+    }, 1000);
+}
+
+function setScoreAndColor(row, score) {
+    row.cells[3].innerText = score;
+    row.style.backgroundColor = getGradientColor(score);
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    const task = tasks.find(task => task.id == row.dataset.id);
+    if (task) {
+        task.score = score;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+}
+
+function playSound() {
+    const audio = new Audio('alarm.mp3');
+    return new Promise((resolve) => {
+        audio.play();
+        setTimeout(() => {
+            audio.pause();
+            audio.currentTime = 0; // Reset audio playback to the beginning
+            resolve();
+        }, 10000); // Play sound for 10 seconds
+    });
+}
+
+function countdownForRow(row, seconds) {
+    const initialSeconds = seconds;
+    const interval = setInterval(() => {
+        if (seconds > 0) {
+            seconds--;
+            row.cells[1].innerText = seconds;
+        } else {
+            clearInterval(interval);
+            playSound().then(() => {
+                setScoreAndColor(row, 100);
+                row.cells[1].innerText = initialSeconds; // Show the initial amount of the timer
+                row.dataset.countdownInProgress = false; // Reset countdown status
+                // alert('Congratulations!');
                 startCountdownIfNotInProgress(); // Start countdown for the next row
             });
         }
