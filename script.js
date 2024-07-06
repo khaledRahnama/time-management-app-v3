@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { once: true });
 });
 
+let countdownRunning = false;
+
 function addTask() {
     const secondsInput = document.getElementById('secondsInput').value;
     const taskInput = document.getElementById('taskInput').value;
@@ -117,6 +119,8 @@ function getGradientColor(score) {
 }
 
 function startCountdownIfNotInProgress() {
+    if (countdownRunning) return;
+
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     const rows = document.querySelectorAll('#taskTableBody tr');
 
@@ -128,6 +132,7 @@ function startCountdownIfNotInProgress() {
                 row.dataset.countdownInProgress = true;
                 row.style.backgroundColor = 'lightblue';
                 task.countdownInProgress = true;
+                countdownRunning = true;
                 localStorage.setItem('tasks', JSON.stringify(tasks));
                 countdownForRow(row, task.seconds);
             }
@@ -149,6 +154,7 @@ function countdownForRow(row, seconds) {
                 row.cells[1].innerText = initialSeconds; // Show the initial amount of the timer
                 row.dataset.countdownInProgress = false; // Reset countdown status
                 row.dataset.countdownCompleted = true; // Mark row as countdown completed
+                countdownRunning = false; // Allow next countdown to start
                 startCountdownIfNotInProgress(); // Start countdown for the next row
             });
         }
