@@ -30,7 +30,7 @@ function addTask() {
     };
 
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.unshift(task);
+    tasks.push(task);  // Append the new task to the end of the list
     localStorage.setItem('tasks', JSON.stringify(tasks));
 
     addTaskToTable(task, tasks.length);
@@ -41,7 +41,7 @@ function addTask() {
 
 function loadTasks() {
     let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.forEach((task, index) => addTaskToTable(task, tasks.length - index));
+    tasks.forEach((task, index) => addTaskToTable(task, index + 1));
 }
 
 function addTaskToTable(task, index) {
@@ -68,7 +68,7 @@ function addTaskToTable(task, index) {
         row.style.backgroundColor = getGradientColor(task.score);
     }
 
-    taskTableBody.insertBefore(row, taskTableBody.firstChild);
+    taskTableBody.appendChild(row);  // Append the row to the end of the table body
 }
 
 function deleteTask(id) {
@@ -118,6 +118,7 @@ function getGradientColor(score) {
 
 function startCountdownIfNotInProgress() {
     const rows = document.querySelectorAll('#taskTableBody tr');
+
     for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         const seconds = parseInt(row.dataset.seconds, 10);
