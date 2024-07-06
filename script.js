@@ -118,8 +118,7 @@ function getGradientColor(score) {
 
 function startCountdownIfNotInProgress() {
     const rows = document.querySelectorAll('#taskTableBody tr');
-
-    for (let i = rows.length - 1; i >= 0; i--) {
+    for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         const seconds = parseInt(row.dataset.seconds, 10);
         const countdownCompleted = row.dataset.countdownCompleted === 'true';
